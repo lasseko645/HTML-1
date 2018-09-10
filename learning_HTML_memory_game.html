@@ -3,11 +3,7 @@
 
 <head>
     <style type="text/css">
-        img {
-            width:128px;
-            height:128px;
-            margin: 0px auto;
-            }
+        
         div#memory_game{
             background: #ccc;
             border: #999 1px solid;
@@ -16,19 +12,112 @@
             padding: 24px;
             margin: 0px auto;
         }
+        div#memory_game > div{
+
+            background:blue;
+            border: #000 1px solid;
+            width: 71px;
+            height: 71px;
+            float: left;
+            margin: 10px;
+            padding: 20px;
+            font-size: 64px;
+            cursor: pointer;
+            text-align: center;
+
+
+        }
     </style>
 
     <script>
-        
+        var image_array = ['a','a','b','b','c','c','d','d'];
+        var image_numbers = [];
+        var image_tile_id = [];
+        var score = 0;
+
+        function memory_game_shuffle(){
+            var i = this.length, j, temp;
+            while(--i > 0){
+                j = Math.floor(Math.random() * (i+1));
+                this[j] = this[i];
+                this[i] = temp;
+            }
+        }
+
+        function startGame(){
+            score = 0;
+            var output = '';
+            image_array.memory_game_shuffle();
+            for(var i = 0; i < image_array; i++){
+                output += 'div id="tile_' + i + '" onclick="flipTile(this,\''+ image_array[i] +'\')"></div>';
+            }
+            document.getElementById('memory_game').innerHTML = output;
+        }
+
+        function clickTile(tile,val){
+            if(tile.innerHTML == "" && image_numbers.length < 2){
+                tile.style.background = '#fff';
+                tile.innerHTML = val;
+                if(image_numbers.length == 0){
+                    image_numbers.push(val);
+                    image_tile_id.push(tile.id);
+                } else if(image_numbers.length == 1){
+                    image_numbers.push(val);
+                    image_tile_id.push(tile.id);
+                    if(image_numbers[0]==image_numbers[1]){
+                        score +=2;
+                        image_numbers = [];
+                        image_tile_id = [];
+
+                        if(score == image_array.length){
+                            alert("you win, wait to play again.");
+                            document.getElementById('memory_game').innerHTML = "";
+                            startGame();
+                        }
+                    }   else    {
+                        function failed_to_match(){
+                            var tile_1 = document.getElementById(image_numbers[0]);
+                            var tile_2 = document.getElementById(image_numbers[1]);
+                            tile_1.style.background('url(http://freizeitjob.info/wp-content/uploads/2018/04/free-vector-free-business-cards-background-illustration-business-card-background.png) no-repeat');
+                            tile_1.innerHTML = "";
+                            tile_2.style.background('url(http://freizeitjob.info/wp-content/uploads/2018/04/free-vector-free-business-cards-background-illustration-business-card-background.png) no-repeat');
+                            tile_2.innerHTML = "";
+
+                            image_numbers = [];
+                            image_tile_id = [];
+
+                        }
+                        setTimeout(failed_to_match, 650);
+                    }
+                }
+            }
+        }
+
+
     </script>
+
+    .gameStartButton{
+        
+    }
 
 </head>
 
 <body>
+
+
 <div id="memory_game">
+    
     <h1>The Terrain Game</h1>
-<table id="table1">
-    <tr>
+
+    <button onclick="startGame()" id="gameStartButton">
+        click me please
+    </button>
+
+
+
+
+<!--<table id="table1">
+    <tr>5
         <th><img src="http://kland.smilebasicsource.com/i/zedul.jpg" alt=""></th>
         <th><img src="http://www.tophatstuff.co.uk/uploaded/20100530191219_hex_worldGen_fullRender.jpg" alt=""></th>
         <th><img src="http://bookaboat.co/wp-content/uploads/2018/06/hqdefault-for-random-world-map-generator.jpg" alt=""></th>
@@ -42,7 +131,12 @@
 
         
     </tr>
-</table>
+
+
+
+
+
+</table>-->
 </div>
 
 </body>
